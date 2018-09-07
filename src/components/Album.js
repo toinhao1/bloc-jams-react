@@ -53,23 +53,36 @@ class Album extends Component {
             <div id="release-info">{this.state.album.releaseInfo}</div>
           </div>
         </section>
-        <table id="song-list">
+        <p></p>
+        <table id="song-list" align="center">
           <colgroup>
             <col id="song-number-column" />
             <col id="sont-title-column" />
             <col id="song-duration-column" />
           </colgroup>
+          <tbody>
           {
-            this.state.album.songs.map( (song, index) =>
-                <tbody key={index} onClick={() => this.handleSongClick(song)} >
-                  <tr>
-                    <td>{index+1}</td>
-                    <td>{song.title}</td>
-                    <td>{song.duration}</td>
-                  </tr>
-                </tbody>
+          this.state.album.songs.map( (song, index) =>
+            <tr className="song" key={index} onClick={() => this.handleSongClick(song)}
+              onMouseEnter={() => this.setState({isHovered: index+1})}
+              onMouseLeave={() => this.setState({isHovered: false})}
+            >
+              <td className="song-changes">
+              { (this.state.currentSong.title === song.title) ?
+                 <span className={this.state.isPlaying ? "ion-pause" : "ion-play"}></span>
+                 :
+                 (this.state.isHovered === index+1) ?
+                 <span className="ion-play"></span>
+                 :
+                 <span className="song-number">{index+1}</span>
+               }
+              </td>
+              <td className="song-title">{song.title}</td>
+              <td className="song-duration">{song.duration}</td>
+            </tr>
               )
           }
+          </tbody>
         </table>
       </section>
     );
